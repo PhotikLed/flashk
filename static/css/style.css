@@ -1,0 +1,11 @@
+h4 {
+    color: #999999;
+    padding-left: 20px;
+}
+
+.image {
+    background-image: url('https://yastatic.net/s3/lyceum/content/images/second-year/web/MARS-2-7.png');
+    background-repeat: no-repeat;
+    padding-left: 150px;
+}
+
