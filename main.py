@@ -1,40 +1,62 @@
 from flask import Flask
+from data import db_session
+from data.users import User
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
-@app.route('/carousel')
-def photos():
-    return """<!doctype html>
-                <html lang="en">
-                  <head>
-                    <meta charset="utf-8">
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-                    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-                    crossorigin="anonymous">                    
-                    <title>Пожилые меркедес бендз</title>
-                  </head>
-                  <body>
-                    <h1>Фотогалерея меркедес бендз</h1>
-                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-                      <div class="carousel-inner">
-                        <div class="carousel-item active">
-                          <img src="static/img/1.jpg" class="d-block w-100" alt="меркедес № 1">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="static/img/2.jpg" class="d-block w-100" alt="меркедес № 4">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="static/img/3.jpg" class="d-block w-100" alt="меркедес № 3">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="static/img/4.jpg" class="d-block w-100" alt="меркедес № 4">
-                        </div>
-                      </div>
-                    </div>
-                  </body>
-                </html>"""
+def main():
+    db_session.global_init("db/mars_explorer.db")
+    data_list = [
+        {
+            'surname': 'Scott',
+            'name': 'Ridley',
+            'age': 21,
+            'position': 'captain',
+            'speciality': 'research engineer',
+            'address': 'module_1',
+            'email': 'scott_chief@mars.org',
+
+        },
+        {
+            'surname': 'Maslo',
+            'name': 'Sergey',
+            'age': 25,
+            'position': 'maslozamenitel',
+            'speciality': 'specialist po masla',
+            'address': 'butyl s maslom',
+            'email': 'siboil@mars.org',
+
+        },
+        {
+            'surname': 'Misha',
+            'name': 'Antifreeze',
+            'age': 20,
+            'position': 'reqg',
+            'speciality': 'specialist po cal',
+            'address': 'butyl s aytifrizom',
+            'email': 'antifriz@mars.org',
+
+        },
+        {
+            'surname': 'petr',
+            'name': 'patron',
+            'age': 60,
+            'position': 'pulemetchik',
+            'speciality': 'specialist po patron',
+            'address': 'otcek s patron',
+            'email': 'patron@mars.org',
+
+        }
+    ]
+    session = db_session.create_session()
+    for user_data in data_list:
+        user = User(**user_data)
+        session.add(user)
+    session.commit()
+    # app.run()
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    main()
