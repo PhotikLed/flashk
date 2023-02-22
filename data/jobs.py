@@ -21,7 +21,7 @@ class Jobs(SqlAlchemyBase):
                                  nullable=True)
     is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
 
-    team_leader_relation = orm.relationship('User', back_populates='jobs')
+    team_leader_relation = orm.relationship('User')
 
     def __repr__(self):
         return f'<Jobs> {self.id}{self.team_leader}'
