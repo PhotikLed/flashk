@@ -1,11 +1,12 @@
 import datetime
 
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from data import db_session
 from data.users import User
 from data.jobs import Jobs
+from forms.jobs import JobForm
 from wtf_cal import LoginForm
 
 app = Flask(__name__)
@@ -21,10 +22,6 @@ def load_user(user_id):
 
 
 @app.route('/')
-def root():
-    return render_template('index.html')
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -52,6 +49,27 @@ def works_log():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/add_job', methods=['GET', 'POST'])
+@login_required
+def add_job():
+    form = JobForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = Jobs()
+        news.job = form.job.data
+        news.work_size = form.work_size.data
+        news.collaborators = form.collaborators.data
+        news.start_date = form.start_date.data
+        news.end_date = form.end_date.data
+        news.is_finished = form.is_finished.data
+        current_user.news.append(news)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('news.html', title='Добавление новости',
+                           form=form)
 
 
 def main():
