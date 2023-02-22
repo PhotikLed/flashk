@@ -1,6 +1,7 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from .db_session import SqlAlchemyBase
 
@@ -24,3 +25,9 @@ class Jobs(SqlAlchemyBase):
 
     def __repr__(self):
         return f'<Jobs> {self.id}{self.team_leader}'
+
+    def set_password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
