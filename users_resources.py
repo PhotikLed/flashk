@@ -44,6 +44,9 @@ class UsersListResource(Resource):
     def post(self):
         args = parser.parse_args()
         session = db_session.create_session()
+        user = session.query(User).get(args.get('id'))
+        if user:
+            return jsonify({'error': 'Id already exists'})
         user = User(
             id=args.get('id'),
             surname=args.get('surname'),
