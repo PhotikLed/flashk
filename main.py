@@ -3,6 +3,7 @@ import datetime
 from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
+from api.users_resources import UsersResource, UsersListResource
 from data import db_session
 from data.users import User
 from data.jobs import Jobs
@@ -10,10 +11,14 @@ from forms.jobs import JobForm
 from wtf_cal import LoginForm
 from jobs_api import blueprint as jobs_blueprint
 
+from flask_restful import Api
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
+api = Api(app)
+
 
 
 @app.errorhandler(404)
@@ -81,11 +86,9 @@ def add_job():
 def main():
     db_session.global_init('db/mars_explorer.db')
     app.register_blueprint(jobs_blueprint)
+    api.add_resource(UsersResource, '/api/v2/users/<int:user_id>')
+    api.add_resource(UsersListResource, '/api/v2/users')
 
-    session = db_session.create_session()
-    user = session.query(User).get(5)
-    user.set_password('11111111')
-    session.commit()
     app.run()
 
 
