@@ -1,7 +1,6 @@
 import pytest
 import requests
 from data.db_session import create_session, global_init
-from data.jobs import Jobs
 
 base_url = 'http://127.0.0.1:5000'
 

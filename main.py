@@ -1,9 +1,7 @@
-import datetime
-
 from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
-from api.users_resources import UsersResource, UsersListResource
+from users_resources import UsersResource, UsersListResource
 from data import db_session
 from data.users import User
 from data.jobs import Jobs

@@ -18,7 +18,7 @@ class UsersResource(Resource):
     def get(self, user_id):
         user = get_or_abort_if_news_not_found(user_id)
         return jsonify({'user': user.to_dict(
-            rules=('-jobs',)})
+            rules=('-jobs',))})
 
     def delete(self, user_id):
         user = get_or_abort_if_news_not_found(user_id)
