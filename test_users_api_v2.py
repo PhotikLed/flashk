@@ -94,3 +94,8 @@ def test_post_user_wrong_already_exist(db_init):
 
     response = requests.post(base_url + '/api/v2/users', json=user_json)
     assert response.json() == {'error': 'Id already exists'}
+
+
+def test_delete_user(db_init):
+    response = requests.delete(base_url + '/api/v2/users/2')
+    assert response.json() == {'success': 'OK'}
